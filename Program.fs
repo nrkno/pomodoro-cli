@@ -13,7 +13,7 @@ let start () =
     DateTime.Now.AddMinutes 25
     |> setEndOfPomodoro
 
-let pause () = setEndOfPomodoro DateTime.Now
+let break' () = setEndOfPomodoro DateTime.Now
 
 let leftOfString (symbol: string) (leftOf: TimeSpan): string =
     leftOf.TotalMinutes
@@ -53,8 +53,8 @@ let leftCommand () =
     printf $"{left ()}"
     0
 
-let pauseCommand () =
-    pause ()
+let breakCommand () =
+    break' ()
     0
 
 let displayHelp () =
@@ -69,8 +69,7 @@ let displayHelp () =
     printfn "             When the pomodoro is over, get minutes left of break. Example: \"☕ 3\"."
     printfn "             When the break is over, get an empty string."
     printfn ""
-    printfn "    pause    Start a 5 minute break"
-    printfn ""
+    printfn "    break    Start a 5 minute break"
     printfn "    help     Show help"
 
 let helpCommand () =
@@ -94,6 +93,6 @@ let main (args: string array): int =
     match command with
     | "start" -> startCommand ()
     | "left" -> leftCommand ()
-    | "pause" -> pauseCommand ()
+    | "break" -> breakCommand ()
     | "help" | "--help" | "-h" -> helpCommand ()
     | _ -> invalidCommand ()
