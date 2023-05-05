@@ -12,3 +12,5 @@
     - Get minutes left of pomodoro. Example: "🍅 19".
     - When the pomodoro is over, get minutes left of break. Example: "☕ 3".
     - When the break is over, get an empty string.
+- `$ pom pause`
+    - Start a 5 minute break

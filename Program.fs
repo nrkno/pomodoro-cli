@@ -4,13 +4,16 @@ open System.Text.Json
 
 let path = "endOfPomodoro.json"
 
-let start () =
-    let endOfPomodoro =
-        DateTime.Now.AddMinutes 25
-        |> JsonSerializer.Serialize
-
-    let endOfPomodoroWithNewLine = endOfPomodoro + "\n"
+let setEndOfPomodoro (endOfPomodoro: DateTime) =
+    let endOfPomodoroString = JsonSerializer.Serialize endOfPomodoro
+    let endOfPomodoroWithNewLine = endOfPomodoroString + "\n"
     File.WriteAllText (path, endOfPomodoroWithNewLine)
+
+let start () =
+    DateTime.Now.AddMinutes 25
+    |> setEndOfPomodoro
+
+let pause () = setEndOfPomodoro DateTime.Now
 
 let leftOfString (symbol: string) (leftOf: TimeSpan): string =
     leftOf.TotalMinutes
@@ -50,6 +53,10 @@ let leftCommand () =
     printf $"{left ()}"
     0
 
+let pauseCommand () =
+    pause ()
+    0
+
 let displayHelp () =
     printfn "pom - a pomodoro command line interface"
     printfn ""
@@ -61,6 +68,8 @@ let displayHelp () =
     printfn "    left     Get minutes left of pomodoro. Example: \"🍅 19\"."
     printfn "             When the pomodoro is over, get minutes left of break. Example: \"☕ 3\"."
     printfn "             When the break is over, get an empty string."
+    printfn ""
+    printfn "    pause    Start a 5 minute break"
     printfn ""
     printfn "    help     Show help"
 
@@ -85,5 +94,6 @@ let main (args: string array): int =
     match command with
     | "start" -> startCommand ()
     | "left" -> leftCommand ()
+    | "pause" -> pauseCommand ()
     | "help" | "--help" | "-h" -> helpCommand ()
     | _ -> invalidCommand ()
